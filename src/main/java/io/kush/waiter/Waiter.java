@@ -9,31 +9,31 @@ import java.util.logging.Logger;
 import io.vertx.core.Future;
 import io.vertx.core.Vertx;
 
-public class WaitUtility {
-    private static final Logger LOGGER = Logger.getLogger(WaitUtility.class.getName());
+public class Waiter {
+    private static final Logger LOGGER = Logger.getLogger(Waiter.class.getName());
 
     private Vertx vertx;
-    private static WaitUtility instance;
+    private static Waiter instance;
     private long initialDelay = 1;
     private long maxWait = 60000;
     private long interval = 2000;
     private Condition<Future<Boolean>> condition;
 
-    private WaitUtility(Vertx vertx) {
+    private Waiter(Vertx vertx) {
         this.vertx = vertx;
     }
 
-    public static WaitUtility instance(Vertx vertx) {
-        instance = new WaitUtility(vertx);
+    public static Waiter instance(Vertx vertx) {
+        instance = new Waiter(vertx);
         return instance;
     }
 
-    public WaitUtility condition(Condition<Future<Boolean>> condition) {
+    public Waiter condition(Condition<Future<Boolean>> condition) {
         instance.condition = condition;
         return instance;
     }
 
-    public WaitUtility initialDelay(int val, TimeUnit timeUnit) {
+    public Waiter initialDelay(int val, TimeUnit timeUnit) {
 
         switch (timeUnit) {
             case DAYS:
@@ -57,7 +57,7 @@ public class WaitUtility {
         return instance;
     }
 
-    public WaitUtility maxWait(int val, TimeUnit timeUnit) {
+    public Waiter maxWait(int val, TimeUnit timeUnit) {
 
         switch (timeUnit) {
             case DAYS:
@@ -81,7 +81,7 @@ public class WaitUtility {
         return instance;
     }
 
-    public WaitUtility interval(int val, TimeUnit timeUnit) {
+    public Waiter interval(int val, TimeUnit timeUnit) {
 
         switch (timeUnit) {
             case DAYS:

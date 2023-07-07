@@ -1,6 +1,7 @@
 package io.kush.waiter;
 
 import java.time.Duration;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
@@ -28,91 +29,91 @@ public class Waiter {
         return instance;
     }
 
+    /**
+     * 
+     * @param condition The operation to execute to determine success ot failure
+     * @return The current instance of this class
+     */
     public Waiter condition(Condition<Future<Boolean>> condition) {
         instance.condition = condition;
         return instance;
     }
 
+    /**
+     * How long to wait before starting to check condition status
+     * 
+     * @param val      Positive whole numder
+     * @param timeUnit Unit of the interval time
+     * @return The current instance of this class
+     */
     public Waiter initialDelay(int val, TimeUnit timeUnit) {
-
-        switch (timeUnit) {
-            case DAYS:
-                initialDelay = Duration.ofDays(val).toMillis();
-                break;
-            case HOURS:
-                initialDelay = Duration.ofHours(val).toMillis();
-                break;
-            case MINUTES:
-                initialDelay = Duration.ofMinutes(val).toMillis();
-                break;
-            case SECONDS:
-                initialDelay = Duration.ofSeconds(val).toMillis();
-                break;
-            case MILLISECONDS:
-                initialDelay = Duration.ofMillis(val).toMillis();
-
-        }
-
+        initialDelay = toMillis(val, timeUnit);
         LOGGER.log(Level.FINEST, "initial lDelay => {0} ms", initialDelay);
         return instance;
     }
 
     public Waiter maxWait(int val, TimeUnit timeUnit) {
-
-        switch (timeUnit) {
-            case DAYS:
-                maxWait = Duration.ofDays(val).toMillis();
-                break;
-            case HOURS:
-                maxWait = Duration.ofHours(val).toMillis();
-                break;
-            case MINUTES:
-                maxWait = Duration.ofMinutes(val).toMillis();
-                break;
-            case SECONDS:
-                maxWait = Duration.ofSeconds(val).toMillis();
-                break;
-            case MILLISECONDS:
-                maxWait = Duration.ofMillis(val).toMillis();
-
-        }
-
+        maxWait = toMillis(val, timeUnit);
         LOGGER.log(Level.FINEST, "Max wait => {0} ms", maxWait);
         return instance;
     }
 
+    /**
+     * How often should the condition be checked
+     * 
+     * @param val      Positive whole numder
+     * @param timeUnit Unit of the interval time
+     * @return The current instance of this class
+     */
     public Waiter interval(int val, TimeUnit timeUnit) {
-
-        switch (timeUnit) {
-            case DAYS:
-                interval = Duration.ofDays(val).toMillis();
-                break;
-            case HOURS:
-                interval = Duration.ofHours(val).toMillis();
-                break;
-            case MINUTES:
-                interval = Duration.ofMinutes(val).toMillis();
-                break;
-            case SECONDS:
-                interval = Duration.ofSeconds(val).toMillis();
-                break;
-            case MILLISECONDS:
-                interval = Duration.ofMillis(val).toMillis();
-        }
-
+        interval = toMillis(val, timeUnit);
         LOGGER.log(Level.FINEST, "Interval => {0} ms", interval);
         return instance;
     }
 
+    private long toMillis(int val, TimeUnit timeUnit) {
+
+        long inMillis = 0;
+
+        switch (timeUnit) {
+            case DAYS:
+                inMillis = Duration.ofDays(val).toMillis();
+                break;
+            case HOURS:
+                inMillis = Duration.ofHours(val).toMillis();
+                break;
+            case MINUTES:
+                inMillis = Duration.ofMinutes(val).toMillis();
+                break;
+            case SECONDS:
+                inMillis = Duration.ofSeconds(val).toMillis();
+                break;
+            case MILLISECONDS:
+                inMillis = Duration.ofMillis(val).toMillis();
+                break;
+            default:
+                throw new RuntimeException("Invalid time unit");
+
+        }
+        return inMillis;
+    }
+
+    /**
+     * Triggers evuation of this waiter.
+     * Should be the last operation invoked.
+     * 
+     * @return
+     */
     public Future<Boolean> fire() {
         assert initialDelay < maxWait && interval < maxWait : "initial delay and interval must be less than max wait";
+        assert Objects.nonNull(condition) : "Instance of " + Condition.class.getName() + " is required";
         AtomicBoolean isDone = new AtomicBoolean();
         return Future.<Boolean>future(prms -> {
 
             long timerId = vertx.setPeriodic(initialDelay, interval, id -> {
                 LOGGER.log(Level.FINEST, "checking condition");
                 condition.check().onSuccess(res -> {
-                    if (res) {
+                    if (res.booleanValue()) {
                         LOGGER.log(Level.FINEST, "Condition succeeded");
                         vertx.cancelTimer(id);
                         isDone.set(res);
@@ -125,11 +126,11 @@ public class Waiter {
             });
 
             vertx.setTimer(maxWait, id -> {
-                // only cancel timer is check is not successful yet
+                // only cancel timer if condition is not successful yet
                 if (!isDone.get()) {
                     LOGGER.log(Level.FINEST, "Cancelling condition check timer");
                     vertx.cancelTimer(timerId);
-                    throw new RuntimeException(maxWait + "ms threshold exceeded");
+                    prms.fail(new TimeoutException(maxWait + "ms threshold exceeded"));
                 }
             });
         });

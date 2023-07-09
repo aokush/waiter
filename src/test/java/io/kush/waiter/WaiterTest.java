@@ -63,7 +63,7 @@ public class WaiterTest {
     @Test
     public void testInterval_invalid(Vertx vertx) {
 
-        assertThrows(AssertionError.class,
+        assertThrows(ConfigException.class,
                 () -> {
                     createWaiter(vertx).condition(createCondition(vertx, true, CONDITION_DELAY))
                             .maxWait(1, TimeUnit.SECONDS)
@@ -75,7 +75,7 @@ public class WaiterTest {
     @Test
     public void testInitialDelay_invalid(Vertx vertx) {
 
-        assertThrows(AssertionError.class,
+        assertThrows(ConfigException.class,
                 () -> {
                     createWaiter(vertx).condition(createCondition(vertx, true, CONDITION_DELAY))
                             .maxWait(1, TimeUnit.SECONDS)
@@ -87,7 +87,7 @@ public class WaiterTest {
     @Test
     public void testCondition_missing(Vertx vertx) {
 
-        assertThrows(AssertionError.class,
+        assertThrows(ConfigException.class,
                 () -> {
                     createWaiter(vertx).fire();
                 });
@@ -112,7 +112,7 @@ public class WaiterTest {
     @Test
     public void testTimeunit_not_allowed_nanos(Vertx vertx) {
 
-        assertThrows(RuntimeException.class,
+        assertThrows(ConfigException.class,
                 () -> {
                     createWaiter(vertx).initialDelay(1, TimeUnit.NANOSECONDS).fire();
                 });
@@ -122,7 +122,7 @@ public class WaiterTest {
     @Test
     public void testTimeunit_not_allowed_micros(Vertx vertx) {
 
-        assertThrows(RuntimeException.class,
+        assertThrows(ConfigException.class,
                 () -> {
                     createWaiter(vertx).initialDelay(1, TimeUnit.MICROSECONDS).fire();
                 });

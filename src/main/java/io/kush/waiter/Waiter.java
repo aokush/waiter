@@ -100,7 +100,7 @@ public class Waiter {
                 inMillis = Duration.ofMillis(val).toMillis();
                 break;
             default:
-                throw new RuntimeException("Invalid time unit");
+                throw new ConfigException("Invalid time unit");
 
         }
         return inMillis;
@@ -114,8 +114,7 @@ public class Waiter {
      *         does not succeeded before max wait time
      */
     public Future<Boolean> fire() {
-        assert initialDelay < maxWait && interval < maxWait : "initial delay and interval must be less than max wait";
-        assert Objects.nonNull(condition) : "Instance of " + Condition.class.getName() + " is required";
+        checkConfig();
         AtomicBoolean isDone = new AtomicBoolean();
         return Future.<Boolean>future(prms -> {
 
@@ -143,6 +142,18 @@ public class Waiter {
                 }
             });
         });
+
+    }
+
+    private void checkConfig() {
+
+        if (maxWait <= initialDelay || maxWait <= interval) {
+            throw new ConfigException("initial delay and interval must be less than max wait");
+        }
+
+        if (Objects.isNull(condition)) {
+            throw new ConfigException("Instance of " + Condition.class.getName() + " is required");
+        }
 
     }
 

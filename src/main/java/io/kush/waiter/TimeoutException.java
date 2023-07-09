@@ -6,7 +6,4 @@ public class TimeoutException extends Exception {
         super(msg);
     }
 
-    public TimeoutException(Throwable t) {
-        super(t);
-    }
 }

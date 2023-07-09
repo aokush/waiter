@@ -4,15 +4,16 @@ import java.time.Duration;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import io.vertx.core.Future;
 import io.vertx.core.Vertx;
 
 public class Waiter {
-    private static final Logger LOGGER = Logger.getLogger(Waiter.class.getName());
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(Waiter.class);
     private Vertx vertx;
     private static Waiter instance;
     private long initialDelay = 1;
@@ -24,12 +25,19 @@ public class Waiter {
         this.vertx = vertx;
     }
 
+    /**
+     * Creates an instance
+     * 
+     * @param vertx An intance of Vertx
+     * @return
+     */
     public static Waiter instance(Vertx vertx) {
         instance = new Waiter(vertx);
         return instance;
     }
 
     /**
+     * Sets the condition to evaluate.
      * 
      * @param condition The operation to execute to determine success ot failure
      * @return The current instance of this class
@@ -48,13 +56,13 @@ public class Waiter {
      */
     public Waiter initialDelay(int val, TimeUnit timeUnit) {
         initialDelay = toMillis(val, timeUnit);
-        LOGGER.log(Level.FINEST, "initial lDelay => {0} ms", initialDelay);
+        LOGGER.debug("initial lDelay => {} ms", initialDelay);
         return instance;
     }
 
     public Waiter maxWait(int val, TimeUnit timeUnit) {
         maxWait = toMillis(val, timeUnit);
-        LOGGER.log(Level.FINEST, "Max wait => {0} ms", maxWait);
+        LOGGER.debug("Max wait => {} ms", maxWait);
         return instance;
     }
 
@@ -67,7 +75,7 @@ public class Waiter {
      */
     public Waiter interval(int val, TimeUnit timeUnit) {
         interval = toMillis(val, timeUnit);
-        LOGGER.log(Level.FINEST, "Interval => {0} ms", interval);
+        LOGGER.debug("Interval => {} ms", interval);
         return instance;
     }
 
@@ -99,10 +107,11 @@ public class Waiter {
     }
 
     /**
-     * Triggers evuation of this waiter.
+     * Triggers evaluation of this waiter.
      * Should be the last operation invoked.
      * 
-     * @return
+     * @return A Future of Boolean that ios failed if condition
+     *         does not succeeded before max wait time
      */
     public Future<Boolean> fire() {
         assert initialDelay < maxWait && interval < maxWait : "initial delay and interval must be less than max wait";
@@ -111,15 +120,15 @@ public class Waiter {
         return Future.<Boolean>future(prms -> {
 
             long timerId = vertx.setPeriodic(initialDelay, interval, id -> {
-                LOGGER.log(Level.FINEST, "checking condition");
+                LOGGER.debug("Checking condition");
                 condition.check().onSuccess(res -> {
                     if (res.booleanValue()) {
-                        LOGGER.log(Level.FINEST, "Condition succeeded");
+                        LOGGER.debug("Condition succeeded");
                         vertx.cancelTimer(id);
                         isDone.set(res);
                         prms.complete(res);
                     } else {
-                        LOGGER.log(Level.FINEST, "Condition failed");
+                        LOGGER.debug("Condition failed");
                     }
                 });
 
@@ -128,7 +137,7 @@ public class Waiter {
             vertx.setTimer(maxWait, id -> {
                 // only cancel timer if condition is not successful yet
                 if (!isDone.get()) {
-                    LOGGER.log(Level.FINEST, "Cancelling condition check timer");
+                    LOGGER.debug("Cancelling condition check timer");
                     vertx.cancelTimer(timerId);
                     prms.fail(new TimeoutException(maxWait + "ms threshold exceeded"));
                 }

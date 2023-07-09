@@ -8,12 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import io.vertx.core.Future;
 import io.vertx.core.Vertx;
@@ -25,7 +25,7 @@ import io.vertx.junit5.VertxTestContext;
 @Timeout(value = 30, timeUnit = TimeUnit.SECONDS)
 public class WaiterTest {
 
-    private static final Logger LOGGER = Logger.getLogger(Waiter.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(WaiterTest.class);
 
     private final long CONDITION_DELAY = 1000;
     private AtomicBoolean check = new AtomicBoolean();
@@ -147,9 +147,9 @@ public class WaiterTest {
         Condition<Future<Boolean>> condition = () -> Future
                 .<Boolean>future(prms -> {
 
-                    LOGGER.log(Level.FINEST, "check: {0}", check.get());
+                    LOGGER.debug("check: {}", check.get());
                     if (check.get() == successful) {
-                        LOGGER.log(Level.FINEST, "Completing");
+                        LOGGER.debug("Completing");
                         prms.complete(successful);
                     }
 

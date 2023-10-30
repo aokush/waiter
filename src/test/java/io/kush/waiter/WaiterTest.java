@@ -23,10 +23,9 @@ import io.vertx.junit5.VertxTestContext;
 
 @ExtendWith(VertxExtension.class)
 @Timeout(value = 30, timeUnit = TimeUnit.SECONDS)
-public class WaiterTest {
+class WaiterTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WaiterTest.class);
-
     private final long CONDITION_DELAY = 1000;
     private AtomicBoolean check = new AtomicBoolean();
 
@@ -39,7 +38,7 @@ public class WaiterTest {
     }
 
     @Test
-    public void testCondition_success(Vertx vertx, VertxTestContext testCtxt) {
+    void testCondition_success(Vertx vertx, VertxTestContext testCtxt) {
 
         createWaiter(vertx).condition(createCondition(vertx, true, CONDITION_DELAY)).fire()
                 .onComplete(testCtxt.succeeding(res -> testCtxt.verify(() -> {
@@ -50,7 +49,7 @@ public class WaiterTest {
     }
 
     @Test
-    public void testCondition_failure(Vertx vertx, VertxTestContext testCtxt) {
+    void testCondition_failure(Vertx vertx, VertxTestContext testCtxt) {
 
         createWaiter(vertx).condition(createCondition(vertx, false, CONDITION_DELAY)).fire()
                 .onComplete(testCtxt.failing(t -> testCtxt.verify(() -> {
@@ -61,7 +60,7 @@ public class WaiterTest {
     }
 
     @Test
-    public void testInterval_invalid(Vertx vertx) {
+    void testInterval_invalid(Vertx vertx) {
 
         assertThrows(ConfigException.class,
                 () -> {
@@ -73,7 +72,7 @@ public class WaiterTest {
     }
 
     @Test
-    public void testInitialDelay_invalid(Vertx vertx) {
+    void testInitialDelay_invalid(Vertx vertx) {
 
         assertThrows(ConfigException.class,
                 () -> {
@@ -85,7 +84,7 @@ public class WaiterTest {
     }
 
     @Test
-    public void testCondition_missing(Vertx vertx) {
+    void testCondition_missing(Vertx vertx) {
 
         assertThrows(ConfigException.class,
                 () -> {
@@ -95,7 +94,7 @@ public class WaiterTest {
     }
 
     @Test
-    public void testTimeunit_allowed(Vertx vertx, VertxTestContext testCtxt) {
+    void testTimeunit_allowed(Vertx vertx, VertxTestContext testCtxt) {
 
         List<Future<?>> waiterFuts = new ArrayList<>();
         waiterFuts.add(timeUnitHelper(1, TimeUnit.DAYS, vertx));
@@ -110,7 +109,7 @@ public class WaiterTest {
     }
 
     @Test
-    public void testTimeunit_not_allowed_nanos(Vertx vertx) {
+    void testTimeunit_not_allowed_nanos(Vertx vertx) {
 
         assertThrows(ConfigException.class,
                 () -> {
@@ -120,7 +119,7 @@ public class WaiterTest {
     }
 
     @Test
-    public void testTimeunit_not_allowed_micros(Vertx vertx) {
+    void testTimeunit_not_allowed_micros(Vertx vertx) {
 
         assertThrows(ConfigException.class,
                 () -> {

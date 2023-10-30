@@ -19,7 +19,8 @@ Condition<Future<Boolean>> condition = () -> Future.<Boolean>future(prms -> {
                 });
 ```
 
-2. Create an instance of Waiter with a Vertx instance and the Condition instance. A Waiter instance can be configured as needed to control the intervals of the condition evaluation and the max time to wait beofre timing out. See examples below.
+2. Create an instance of Waiter with a Vertx instance and the Condition instance. A Waiter instance can be configured as needed to control the intervals of the condition evaluation and the max time to wait beofre timing out. See examples below. <br>
+   Creates an instance of Waiter with default interval (2 secs) and max wait time (60 secs). The condition is evaluated every 2 secs until it returns true or until 60 secs after which the operation times out.
 
    ```
    Waiter.instance(vertx)
@@ -39,8 +40,7 @@ Condition<Future<Boolean>> condition = () -> Future.<Boolean>future(prms -> {
    ```
 
    <br>
-
-   Creates an instance of Waiter with custom interval (5 secs) and default max wait time (60 secs). The condition is evaluated every 5 secs until it returns true or until 60 secs after which the operation times out.
+   Creates an instance of Waiter with custom interval (5 secs) and max wait time (5 mins). The condition is evaluated every 5 secs until it returns true or until 5 minutes after which the operation times out.
 
    ```
    Waiter.instance(vertx)
@@ -49,7 +49,3 @@ Condition<Future<Boolean>> condition = () -> Future.<Boolean>future(prms -> {
       .condition(condition)
       .fire()
    ```
-
-   <br>
-
-   Creates an instance of Waiter with custom interval (5 secs) and max wait time (60 mins). The condition is evaluated every 5 secs until it returns true or until 60 minutes after which the operation times out.

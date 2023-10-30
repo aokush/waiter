@@ -21,11 +21,14 @@ Condition<Future<Boolean>> condition = () -> Future.<Boolean>future(prms -> {
 
 2. Create an instance of Waiter with a Vertx instance and the Condition instance. A Waiter instance can be configured as needed to control the intervals of the condition evaluation and the max time to wait beofre timing out. See examples below.
 
-   - `Waiter.instance(vertx).condition(condition).fire()`<br>
-     Creates an instance of Waiter with default interval (2 secs) and max wait time (60 secs). The condition is evaluated every 2 secs until it returns true or until 60 secs after which the operation times out.
+   `Waiter.instance(vertx).condition(condition).fire()`<br>
 
-   - `Waiter.instance(vertx).interval(5, TimeUnit.SECONDS).condition(condition).fire()`<br>
-     Creates an instance of Waiter with custom interval (5 secs) and default max wait time (60 secs). The condition is evaluated every 5 secs until it returns true or until 60 secs after which the operation times out.
+   Creates an instance of Waiter with default interval (2 secs) and max wait time (60 secs). The condition is evaluated every 2 secs until it returns true or until 60 secs after which the operation times out.
 
-   - `Waiter.instance(vertx).interval(5, TimeUnit.SECONDS).maxWait(5, TimeUnit.MINUTES).condition(condition).fire()` <br>
-     Creates an instance of Waiter with custom interval (5 secs) and max wait time (60 mins). The condition is evaluated every 5 secs until it returns true or until 60 minutes after which the operation times out.
+   `Waiter.instance(vertx).interval(5, TimeUnit.SECONDS).condition(condition).fire()`<br>
+
+   Creates an instance of Waiter with custom interval (5 secs) and default max wait time (60 secs). The condition is evaluated every 5 secs until it returns true or until 60 secs after which the operation times out.
+
+   `Waiter.instance(vertx).interval(5, TimeUnit.SECONDS).maxWait(5, TimeUnit.MINUTES).condition(condition).fire()` <br>
+
+   Creates an instance of Waiter with custom interval (5 secs) and max wait time (60 mins). The condition is evaluated every 5 secs until it returns true or until 60 minutes after which the operation times out.

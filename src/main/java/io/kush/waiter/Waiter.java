@@ -26,8 +26,8 @@ public class Waiter {
     }
 
     /**
-     * Creates an instance
-     * 
+     * Creates an instance.
+     *
      * @param vertx An intance of Vertx
      * @return
      */
@@ -38,7 +38,7 @@ public class Waiter {
 
     /**
      * Sets the condition to evaluate.
-     * 
+     *
      * @param condition The operation to execute to determine success ot failure
      * @return The current instance of this class
      */
@@ -49,17 +49,24 @@ public class Waiter {
 
     /**
      * How long to wait before starting to check condition status
-     * 
+     *
      * @param val      Positive whole numder
-     * @param timeUnit Unit of the interval time
+     * @param timeUnit Unit of time specified
      * @return The current instance of this class
      */
     public Waiter initialDelay(int val, TimeUnit timeUnit) {
         initialDelay = toMillis(val, timeUnit);
-        LOGGER.debug("initial lDelay => {} ms", initialDelay);
+        LOGGER.debug("initial Delay => {} ms", initialDelay);
         return instance;
     }
 
+    /**
+     * Maximum time to wait before timing out.
+     *
+     * @param val      Positive whole numder
+     * @param timeUnit Unit of time specified
+     * @return The current instance of this class
+     */
     public Waiter maxWait(int val, TimeUnit timeUnit) {
         maxWait = toMillis(val, timeUnit);
         LOGGER.debug("Max wait => {} ms", maxWait);
@@ -68,9 +75,9 @@ public class Waiter {
 
     /**
      * How often should the condition be checked
-     * 
+     *
      * @param val      Positive whole numder
-     * @param timeUnit Unit of the interval time
+     * @param timeUnit Unit of time specified
      * @return The current instance of this class
      */
     public Waiter interval(int val, TimeUnit timeUnit) {
@@ -107,9 +114,9 @@ public class Waiter {
     }
 
     /**
-     * Triggers evaluation of this waiter.
+     * Triggers evaluation for this waiter.
      * Should be the last operation invoked.
-     * 
+     *
      * @return A Future of Boolean that ios failed if condition
      *         does not succeeded before max wait time
      */

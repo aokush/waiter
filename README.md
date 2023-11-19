@@ -1,3 +1,5 @@
+[![Java CI with Maven](https://github.com/aokush/waiter/actions/workflows/maven.yml/badge.svg)](https://github.com/aokush/waiter/actions/workflows/maven.yml)
+
 # Waiter
 
 Have you ever been in a situation where you needed to check for a certain condition in a remote process before you can execute a dependent step? Look no further, Waiter is just what you need. It is designed to check a condition of your choice at regular interval for a duration until the condition specified becomes valid or the wait time elapses (times out).

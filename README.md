@@ -14,10 +14,8 @@ Waiter requires an intance of [io.vertx.core.Vertx](https://vertx.io/) version 4
 Condition<Future<Boolean>> condition = () -> Future.<Boolean>future(prms -> {
 
                     // For example, check database table contains a record
-                    if (record exists) {
-                        prms.complete(true);
-                    }
-
+                    Object dbRec = <Find record in DB>;
+                    prms.complete(Objects.nonNull(dbRec));
                 });
 ```
 

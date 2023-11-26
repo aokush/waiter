@@ -9,6 +9,7 @@ Waiter requires an intance of [io.vertx.core.Vertx](https://vertx.io/) version 4
 ## Use
 
 1. Create an instance of `io.kush.waiter.Condition` that returns Vertx `Future<Boolean>`
+   &nbsp;
 
    ```java
     Condition<Future<Boolean>> condition = () -> Future.<Boolean>future(prms -> {

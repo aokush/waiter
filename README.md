@@ -22,7 +22,7 @@ Condition<Future<Boolean>> condition = () -> Future.<Boolean>future(prms -> {
 ```
 
 2. Create an instance of `io.kush.waiter.Waiter` with a Vertx and Condition instances as parameters. A Waiter instance can be configured to control the intervals of the condition evaluation and the max time to wait before the operation terminates with a `io.kush.waiter.TimeoutException`. See examples below. <br>
-   Creates an instance of Waiter with default interval (2 secs) and max wait time (60 secs). This condition is evaluated every 2 secs until its future completes with `true` or until 60 secs after which the operation terminates.
+   Creates an instance of Waiter with default interval (2 secs) and max wait time (60 secs). This condition is evaluated every 2 secs until either its future completes with `true` or for 60 secs after which the operation terminates.
 
    ```
    Waiter.instance(vertx)
@@ -32,7 +32,7 @@ Condition<Future<Boolean>> condition = () -> Future.<Boolean>future(prms -> {
 
    <br>
 
-   Creates an instance of Waiter with default interval (5 secs) and max wait time (60 secs). This condition is evaluated every 2 secs until its future completes with `true` or until 60 secs after which the operation terminates.
+   Creates an instance of Waiter with default interval (5 secs) and max wait time (60 secs). This condition is evaluated every 2 secs until either its future completes with `true` or for 60 secs after which the operation terminates.
 
    ```
    Waiter.instance(vertx)
@@ -42,7 +42,7 @@ Condition<Future<Boolean>> condition = () -> Future.<Boolean>future(prms -> {
    ```
 
    <br>
-   Creates an instance of Waiter with custom interval (5 secs) and max wait time (5 mins). This condition is evaluated every 5 secs until its future completes with ```true``` or until 5 minutes after which the operation terminates.
+   Creates an instance of Waiter with custom interval (5 secs) and max wait time (5 mins). This condition is evaluated every 5 secs until either its future completes with `true` or for 5 minutes after which the operation terminates.
 
    ```
    Waiter.instance(vertx)

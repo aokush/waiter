@@ -23,14 +23,7 @@
     <jacoco.unit-tests.limit.method-complexity>50</jacoco.unit-tests.limit.method-complexity>
   </properties>
 
-  <distributionManagement>
-     <repository>
-       <id>github</id>
-       <name>Adebiyi Kuseju Apache Maven Packages</name>
-       <url>https://maven.pkg.github.com/aokush/waiter</url>
-     </repository>
-  </distributionManagement>
-  
+
   <dependencies>
     <dependency>
       <groupId>io.vertx</groupId>

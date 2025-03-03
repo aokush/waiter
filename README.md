@@ -8,7 +8,7 @@ Waiter requires an intance of [io.vertx.core.Vertx](https://vertx.io/) 4.x.x to 
 
 # Use
 
-1. Create an instance of `io.kush.waiter.Condition` that returns Vertx `Future<Boolean>`
+1. Create an instance of `io.kush.waiter.Condition` that returns a Vertx `Future<Boolean>`
 
 ```
 Condition<Future<Boolean>> condition = () -> Future.<Boolean>future(prms -> {

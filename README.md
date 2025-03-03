@@ -4,7 +4,7 @@
 
 Have you ever been in a situation where you needed to check for a certain condition in a remote process before you can execute a dependent step? Look no further, Waiter is just what you need. It is designed to check a condition of your choice at regular interval for a duration until the condition specified becomes valid or the wait time elapses (times out).
 
-Waiter requires an intance of [io.vertx.core.Vertx](https://vertx.io/) 4.x.x to operate; therefore, may be more application for projects where Vertx is used.
+Waiter requires an intance of [io.vertx.core.Vertx](https://vertx.io/) 4.x.x to operate; therefore, may be more suitable for projects where Vertx is used.
 
 # Use
 
@@ -21,7 +21,7 @@ Condition<Future<Boolean>> condition = () -> Future.<Boolean>future(prms -> {
                 });
 ```
 
-2. Create an instance of `io.kush.waiter.Waiter` with a Vertx instance and the Condition instance. A Waiter instance can be configured as needed to control the intervals of the condition evaluation and the max time to wait before timing out. See examples below. <br>
+2. Create an instance of `io.kush.waiter.Waiter` with an instance of Vertx and an implementation of the Condition interface. A Waiter instance can be configured as needed to control the intervals of the condition evaluation and the max time to wait before timing out. See examples below. <br>
    Creates an instance of Waiter with default interval (2 secs) and max wait time (60 secs). This condition is evaluated every 2 secs until it returns `true` or until 60 secs after which the operation times out.
 
    ```

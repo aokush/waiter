@@ -34,6 +34,7 @@ Condition<Future<Boolean>> condition = () -> Future.<Boolean>future(prms -> {
 ```
 
 3. Create an instance of `io.kush.waiter.Waiter` with a Vertx instance and the Condition instance. A Waiter instance can be configured as needed to control the intervals of the condition evaluation and the max time to wait before timing out. See examples below. 
+
    <br>
    
    Creates an instance of Waiter with default interval (2 secs) and max wait time (60 secs). This condition is evaluated every 2 secs until it returns `true` or until 60 secs after which the operation times out.

@@ -4,11 +4,13 @@
 
 Have you ever been in a situation where you needed to check for a certain condition in a remote process before you can execute a dependent step? Look no further, Waiter is just what you need. It is designed to check a condition of your choice at regular interval for a duration until the condition specified becomes valid or the wait time elapses (times out).
 
-Waiter requires an intance of [io.vertx.core.Vertx](https://vertx.io/) 4.x.x to operate; therefore, may be more application for projects where Vertx is used.
+Waiter requires an intance of [io.vertx.core.Vertx](https://vertx.io/) 4.x.x to operate; therefore, may be more suitable for projects where Vertx is used.
+
 
 # Use
 
 1. Include Waiter dependency in your pom.xml file.
+
 
 ```
    <dependency>
@@ -16,10 +18,9 @@ Waiter requires an intance of [io.vertx.core.Vertx](https://vertx.io/) 4.x.x to 
       <artifactId>waiter</artifactId>
       <version>{version}</version>
    </dependency>
-
 ```
 
-2. Create an instance of `io.kush.waiter.Condition` that returns Vertx `Future<Boolean>`
+2. Create an instance of `io.kush.waiter.Condition` that returns Vertx `Future<Boolean>`.
 
 ```
 Condition<Future<Boolean>> condition = () -> Future.<Boolean>future(prms -> {

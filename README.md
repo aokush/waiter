@@ -6,9 +6,21 @@ Have you ever been in a situation where you needed to check for a certain condit
 
 Waiter requires an intance of [io.vertx.core.Vertx](https://vertx.io/) 4.x.x to operate; therefore, may be more application for projects where Vertx is used.
 
+
 # Use
 
-1. Create an instance of `io.kush.waiter.Condition` that returns Vertx `Future<Boolean>`
+1. Include Waiter dependency in your pom.xml file.
+
+
+```
+   <dependency>
+      <groupId>io.kush</groupId>
+      <artifactId>waiter</artifactId>
+      <version>{version}</version>
+   </dependency>
+```
+
+2. Create an instance of `io.kush.waiter.Condition` that returns Vertx `Future<Boolean>`.
 
 ```
 Condition<Future<Boolean>> condition = () -> Future.<Boolean>future(prms -> {
@@ -21,7 +33,7 @@ Condition<Future<Boolean>> condition = () -> Future.<Boolean>future(prms -> {
                 });
 ```
 
-2. Create an instance of `io.kush.waiter.Waiter` with a Vertx instance and the Condition instance. A Waiter instance can be configured as needed to control the intervals of the condition evaluation and the max time to wait before timing out. See examples below. <br>
+3. Create an instance of `io.kush.waiter.Waiter` with a Vertx instance and the Condition instance. A Waiter instance can be configured as needed to control the intervals of the condition evaluation and the max time to wait before timing out. See examples below. <br>
    Creates an instance of Waiter with default interval (2 secs) and max wait time (60 secs). This condition is evaluated every 2 secs until it returns `true` or until 60 secs after which the operation times out.
 
    ```
